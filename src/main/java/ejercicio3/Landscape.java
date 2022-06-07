@@ -13,9 +13,10 @@ public class Landscape {
     private boolean estadoIsla;
     private boolean estadoTierra;
 
-    public Landscape(boolean estadoTierra) {
+    public Landscape(boolean estadoTierra, boolean estadoIsla) {
 
         this.estadoTierra = estadoTierra;
+        this.estadoIsla = estadoIsla;
 
     }
 
@@ -45,10 +46,10 @@ public class Landscape {
         } else {
             return "Agua";
         }*/
-        if (estadoTierra) {
+        if (estadoIsla) {
+            return "I";
+        } else if (estadoTierra) {
             return "X";
-        } else if (estadoIsla) {
-            return "Isla";
         } else {
             return "A";
         }

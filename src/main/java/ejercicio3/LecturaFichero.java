@@ -6,6 +6,7 @@ package ejercicio3;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -20,6 +21,8 @@ public class LecturaFichero {
     // Variables para guardar los datos que se van leyendo
     private static String[] tokens;
     private static String linea;
+
+    private static Landscape[][] terreno = new Landscape[calcularFila()][calcularColumna()];
 
     private static int calcularColumna() {
 
@@ -73,12 +76,68 @@ public class LecturaFichero {
 
     }
 
+    public static void recorrerAreaIslas(int ii, int jj) {
+
+        ArrayList<Landscape> l1 = new ArrayList<>();
+        ArrayList<Landscape> l2 = new ArrayList<>();
+        ArrayList<Landscape> l3 = new ArrayList<>();
+        ArrayList<Landscape> l4 = new ArrayList<>();
+
+        for (int i = ii - 1; i < ii + 1; i++) {
+
+            for (int j = jj - 1; j < jj + 1; j++) {
+
+                //System.out.print(terreno[i][j] + "\t");
+                if ((i >= 0 && i <= terreno.length) || (j >= 0 && j <= terreno[i].length)) {
+                    l1.add(terreno[i][j]);
+                }
+
+            }
+
+            for (int j = jj + 1; j < jj + 2; j++) {
+
+                //System.out.print(terreno[i][j] + "\t");
+                if ((i >= 0 && i <= terreno.length) || (j >= 0 && j <= terreno[i].length)) {
+                    l2.add(terreno[i][j]);
+                }
+
+            }
+
+        }
+
+        for (int i = ii + 1; i < ii + 2; i++) {
+
+            if ((i >= 0 && i <= terreno.length)) {
+                for (int j = jj - 1; j < jj + 1; j++) {
+
+                    //System.out.print(terreno[i][j] + "\t");
+                    
+                    
+                    // REPOSITORIO DE CRIS TIENE LO QUE NECESITAS //
+                    
+                    if (true) {
+                        
+                    }
+                    l3.add(terreno[i][j]);
+
+                }
+            }
+
+            for (int j = jj + 1; j < jj + 2; j++) {
+
+                //System.out.print(terreno[i][j] + "\t");
+                l4.add(terreno[i][j]);
+
+            }
+
+        }
+
+    }
+
     public static void main(String[] args) {
 
         System.out.println("Leyendo el fichero: " + idFichero);
         int i = 0;
-
-        Landscape[][] terreno = new Landscape[calcularFila()][calcularColumna()];
 
         // Inicialización del flujo "datosFichero" en función del archivo llamado "idFichero"
         // Estructura try-with-resources. Permite cerrar los recursos una vez finalizadas
@@ -100,11 +159,18 @@ public class LecturaFichero {
 
                     if (tokens[j].equals("x")) {
 
-                        terreno[i][j] = new Landscape(true);
+                        terreno[i][j] = new Landscape(true, false);
+
+                        /*if (((i == 1) && (j == 1))||((i == 4) && (j == 4))) {
+                            terreno[i][j] = new Landscape(true, true);
+                        }*/
+                        if ((i >= 0 && i <= terreno.length) || (j >= 0 && j <= terreno[i].length)) {
+                            recorrerAreaIslas(i, j);
+                        }
 
                     } else if (tokens[j].equals("a")) {
 
-                        terreno[i][j] = new Landscape(false);
+                        terreno[i][j] = new Landscape(false, false);
                     }
 
                 }
@@ -120,6 +186,7 @@ public class LecturaFichero {
                     System.out.print(terreno11 + " ");
                 }
             }
+            System.out.println("\n");
 
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
