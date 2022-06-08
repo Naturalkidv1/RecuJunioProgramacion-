@@ -23,6 +23,8 @@ public class LecturaFichero {
     private static String linea;
 
     private static ArrayList<Landscape> l1 = new ArrayList<>();
+    //private static ArrayList<Landscape> lFinal = new ArrayList<>();
+    private static ArrayList<Landscape> l2 = new ArrayList<>();
 
     private static Landscape[][] terreno = new Landscape[calcularFila()][calcularColumna()];
 
@@ -30,7 +32,7 @@ public class LecturaFichero {
 
         int contCol = 0;
 
-        try (Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
+        try ( Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
             // hasNextLine devuelve true mientras haya líneas por leer
             while (datosFichero.hasNextLine()) {
                 // Guarda la línea completa en un String
@@ -55,7 +57,7 @@ public class LecturaFichero {
 
         int contFila = 0;
 
-        try (Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
+        try ( Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
             // hasNextLine devuelve true mientras haya líneas por leer
             while (datosFichero.hasNextLine()) {
                 // Guarda la línea completa en un String
@@ -81,22 +83,107 @@ public class LecturaFichero {
     private static void recorrerAreaIslas(int ii, int jj) {
         l1.clear();
 
-        for (int i = ii - 1; i < ii + 2; i++) {
+        if (ii < terreno.length && ii >= 0) {
+            if (jj < terreno[ii].length && jj >= 0) {
 
-            if ((i >= 0 && i <= terreno.length - 1)) {
+                for (int i = ii - 1; i < ii + 1; i++) {
 
-                for (int j = jj - 1; j < jj + 1; j++) {
+                    if ((i >= 0 && i <= terreno.length)) {
 
-                    if ((j >= 0 && i <= terreno.length)) {
+                        for (int j = jj - 1; j < jj + 1; j++) {
 
-                        l1.add(terreno[i][j]);
+                            if ((j >= 0 && j <= terreno.length)) {
+
+                                l1.add(terreno[i][j]);
+
+                            }
+
+                        }
+
+                        for (int j = jj + 1; j < jj + 2; j++) {
+
+                            if ((j >= 0 && j <= terreno.length - 1)) {
+
+                                l1.add(terreno[i][j]);
+
+                            }
+
+                        }
 
                     }
 
                 }
+
+            }
+        }
+    } //?
+
+    private static ArrayList<Landscape> recorrerIslasManual(int k, int l) {
+
+        l2.clear();
+
+        if ((k >= 1 && k <= terreno.length)) {
+
+            if ((l >= 0 && l <= terreno.length)) {
+                l2.add(terreno[k - 1][l - 1]);
             }
 
         }
+
+        if ((k >= 1 && k <= terreno.length)) {
+
+            if ((l >= 0 && l <= terreno.length)) {
+                l2.add(terreno[k - 1][l]);
+            }
+
+        }
+
+        if ((k >= 1 && k <= terreno.length)) {
+
+            if ((l >= 0 && l <= terreno.length)) {
+                l2.add(terreno[k - 1][l + 1]);
+            }
+
+        }
+
+        if ((k >= 0 && k <= terreno.length)) {
+
+            if ((l >= 1 && l <= terreno.length)) {
+                l2.add(terreno[k][l - 1]);
+            }
+
+        }
+
+        if ((k >= 0 && k <= terreno.length - 1)) {
+
+            if ((l >= 0 && l <= terreno.length - 1)) {
+                l2.add(terreno[k][l + 1]);
+            }
+
+        }
+        if ((k >= 0 && k <= terreno.length)) {
+
+            if ((l >= 1 && l <= terreno.length)) {
+                l2.add(terreno[k + 1][l - 1]);
+            }
+
+        }
+        if ((k >= 0 && k <= terreno.length)) {
+
+            if ((l >= 0 && l <= terreno.length)) {
+                l2.add(terreno[k + 1][l]);
+            }
+
+        }
+        if ((k >= 0 && k <= terreno.length)) {
+
+            if ((l >= 0 && l <= terreno.length)) {
+                l2.add(terreno[k + 1][l + 1]);
+            }
+
+        }
+
+        return l2;
 
     }
 
@@ -108,7 +195,7 @@ public class LecturaFichero {
         // Inicialización del flujo "datosFichero" en función del archivo llamado "idFichero"
         // Estructura try-with-resources. Permite cerrar los recursos una vez finalizadas
         // las operaciones con el archivo
-        try (Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
+        try ( Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
             // hasNextLine devuelve true mientras haya líneas por leer
             while (datosFichero.hasNextLine()) {
                 // Guarda la línea completa en un String
@@ -127,15 +214,10 @@ public class LecturaFichero {
 
                         terreno[i][j] = new Landscape(true, false);
 
-                        /*if (((i == 1) && (j == 1))||((i == 4) && (j == 4))) {
-                            terreno[i][j] = new Landscape(true, true);
-                        }*/
- /*if ((i >= 0 && i <= terreno.length) || (j >= 0 && j <= terreno[i].length)) {
-                            recorrerAreaIslas(i, j);
-                        }*/
-                        recorrerAreaIslas(i, j);
-                        System.out.println(l1);
+                        System.out.println(recorrerIslasManual(i, j));
 
+                        //recorrerAreaIslas(i, j);
+                        //System.out.println(l1);
                     } else if (tokens[j].equals("a")) {
 
                         terreno[i][j] = new Landscape(false, false);
