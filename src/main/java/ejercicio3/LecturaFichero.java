@@ -22,13 +22,15 @@ public class LecturaFichero {
     private static String[] tokens;
     private static String linea;
 
+    private static ArrayList<Landscape> l1 = new ArrayList<>();
+
     private static Landscape[][] terreno = new Landscape[calcularFila()][calcularColumna()];
 
     private static int calcularColumna() {
 
         int contCol = 0;
 
-        try ( Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
+        try (Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
             // hasNextLine devuelve true mientras haya líneas por leer
             while (datosFichero.hasNextLine()) {
                 // Guarda la línea completa en un String
@@ -53,7 +55,7 @@ public class LecturaFichero {
 
         int contFila = 0;
 
-        try ( Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
+        try (Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
             // hasNextLine devuelve true mientras haya líneas por leer
             while (datosFichero.hasNextLine()) {
                 // Guarda la línea completa en un String
@@ -76,58 +78,22 @@ public class LecturaFichero {
 
     }
 
-    public static void recorrerAreaIslas(int ii, int jj) {
+    private static void recorrerAreaIslas(int ii, int jj) {
+        l1.clear();
 
-        ArrayList<Landscape> l1 = new ArrayList<>();
-        ArrayList<Landscape> l2 = new ArrayList<>();
-        ArrayList<Landscape> l3 = new ArrayList<>();
-        ArrayList<Landscape> l4 = new ArrayList<>();
+        for (int i = ii - 1; i < ii + 2; i++) {
 
-        for (int i = ii - 1; i < ii + 1; i++) {
+            if ((i >= 0 && i <= terreno.length - 1)) {
 
-            for (int j = jj - 1; j < jj + 1; j++) {
-
-                //System.out.print(terreno[i][j] + "\t");
-                if ((i >= 0 && i <= terreno.length) || (j >= 0 && j <= terreno[i].length)) {
-                    l1.add(terreno[i][j]);
-                }
-
-            }
-
-            for (int j = jj + 1; j < jj + 2; j++) {
-
-                //System.out.print(terreno[i][j] + "\t");
-                if ((i >= 0 && i <= terreno.length) || (j >= 0 && j <= terreno[i].length)) {
-                    l2.add(terreno[i][j]);
-                }
-
-            }
-
-        }
-
-        for (int i = ii + 1; i < ii + 2; i++) {
-
-            if ((i >= 0 && i <= terreno.length)) {
                 for (int j = jj - 1; j < jj + 1; j++) {
 
-                    //System.out.print(terreno[i][j] + "\t");
-                    
-                    
-                    // REPOSITORIO DE CRIS TIENE LO QUE NECESITAS //
-                    
-                    if (true) {
-                        
+                    if ((j >= 0 && i <= terreno.length)) {
+
+                        l1.add(terreno[i][j]);
+
                     }
-                    l3.add(terreno[i][j]);
 
                 }
-            }
-
-            for (int j = jj + 1; j < jj + 2; j++) {
-
-                //System.out.print(terreno[i][j] + "\t");
-                l4.add(terreno[i][j]);
-
             }
 
         }
@@ -142,7 +108,7 @@ public class LecturaFichero {
         // Inicialización del flujo "datosFichero" en función del archivo llamado "idFichero"
         // Estructura try-with-resources. Permite cerrar los recursos una vez finalizadas
         // las operaciones con el archivo
-        try ( Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
+        try (Scanner datosFichero = new Scanner(new File(idFichero), "UTF-8")) {
             // hasNextLine devuelve true mientras haya líneas por leer
             while (datosFichero.hasNextLine()) {
                 // Guarda la línea completa en un String
@@ -164,9 +130,11 @@ public class LecturaFichero {
                         /*if (((i == 1) && (j == 1))||((i == 4) && (j == 4))) {
                             terreno[i][j] = new Landscape(true, true);
                         }*/
-                        if ((i >= 0 && i <= terreno.length) || (j >= 0 && j <= terreno[i].length)) {
+ /*if ((i >= 0 && i <= terreno.length) || (j >= 0 && j <= terreno[i].length)) {
                             recorrerAreaIslas(i, j);
-                        }
+                        }*/
+                        recorrerAreaIslas(i, j);
+                        System.out.println(l1);
 
                     } else if (tokens[j].equals("a")) {
 
