@@ -6,4 +6,6 @@ package ejercicio2;
  */
 public class AlumnoPOJO {
     
+    
+    
 }

@@ -12,11 +12,15 @@ public class Landscape {
 
     private boolean estadoIsla;
     private boolean estadoTierra;
+    private int ejeX;
+    private int ejeY;
 
-    public Landscape(boolean estadoTierra, boolean estadoIsla) {
+    public Landscape(boolean estadoTierra, boolean estadoIsla, int ejeX, int ejeY) {
 
         this.estadoTierra = estadoTierra;
         this.estadoIsla = estadoIsla;
+        this.ejeX = ejeX;
+        this.ejeY = ejeY;
 
     }
 
@@ -36,22 +40,33 @@ public class Landscape {
         this.estadoTierra = estadoTierra;
     }
 
+    public int getEjeX() {
+        return ejeX;
+    }
+
+    public void setEjeX(int ejeX) {
+        this.ejeX = ejeX;
+    }
+
+    public int getEjeY() {
+        return ejeY;
+    }
+
+    public void setEjeY(int ejeY) {
+        this.ejeY = ejeY;
+    }
+    
+    
+
     @Override
     public String toString() {
 
-        /*if (estadoTierra) {
-            return "Tierra";
-        } else if (estadoIsla) {
-            return "Isla";
-        } else {
-            return "Agua";
-        }*/
         if (estadoIsla) {
-            return "I";
+            return "I{" + ejeX + " - " + ejeY + "}";
         } else if (estadoTierra) {
-            return "X";
+            return "X{" + ejeX + " - " + ejeY + "}";
         } else {
-            return "A";
+            return "A{" + ejeX + " - " + ejeY + "}";
         }
 
     }

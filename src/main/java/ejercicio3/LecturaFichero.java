@@ -4,9 +4,14 @@
  */
 package ejercicio3;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -26,6 +31,7 @@ public class LecturaFichero {
     //private static ArrayList<Landscape> lFinal = new ArrayList<>();
     private static ArrayList<Landscape> l2 = new ArrayList<>();
 
+    //private static Landscape[][] terreno = new Landscape[calcularFila() + 2][calcularColumna() + 2];
     private static Landscape[][] terreno = new Landscape[calcularFila()][calcularColumna()];
 
     private static int calcularColumna() {
@@ -94,22 +100,16 @@ public class LecturaFichero {
 
                             if ((j >= 0 && j <= terreno.length)) {
 
-                                l1.add(terreno[i][j]);
+                                //System.out.println("i: " + i + " j: " + j);
+                                if (!(terreno[i][j] == null)) {
+                                    l1.add(terreno[i][j]);
+                                }
 
                             }
 
                         }
 
-                        for (int j = jj + 1; j < jj + 2; j++) {
-
-                            if ((j >= 0 && j <= terreno.length - 1)) {
-
-                                l1.add(terreno[i][j]);
-
-                            }
-
-                        }
-
+                        
                     }
 
                 }
@@ -122,68 +122,64 @@ public class LecturaFichero {
 
         l2.clear();
 
-        if ((k >= 1 && k <= terreno.length)) {
+        /*l2.add(terreno[k - 1][l - 1]);
+        l2.add(terreno[k - 1][l]);
+        l2.add(terreno[k - 1][l + 1]);
+        
+        l2.add(terreno[k][l - 1]);
+        l2.add(terreno[k][l + 1]);
+        
+        l2.add(terreno[k + 1][l - 1]);
+        l2.add(terreno[k + 1][l]);
+        l2.add(terreno[k + 1][l + 1]);*/
+        //System.out.println("k: " + k + " l: " + l);
+        if ((k >= 1 && k <= terreno.length - 1)) {
 
-            if ((l >= 0 && l <= terreno.length)) {
-                l2.add(terreno[k - 1][l - 1]);
-            }
+            if ((l >= 1 && l <= terreno.length - 1)) {
+                if ((terreno[k - 1][l - 1]) != null) {
+                    l2.add(terreno[k - 1][l - 1]);
+                }
+                if ((terreno[k - 1][l]) != null) {
+                    l2.add(terreno[k - 1][l]);
+                }
+                if ((terreno[k - 1][l + 1]) != null) {
+                    l2.add(terreno[k - 1][l + 1]);
+                }
+                if ((terreno[k][l - 1]) != null) {
+                    l2.add(terreno[k][l - 1]);
+                }
+                if ((terreno[k][l + 1]) != null) {
+                    l2.add(terreno[k][l + 1]);
+                }
+                if ((terreno[k + 1][l - 1]) != null) {
+                    l2.add(terreno[k + 1][l - 1]);
+                }
+                if ((terreno[k + 1][l]) != null) {
+                    l2.add(terreno[k + 1][l]);
+                }
+                if ((terreno[k + 1][l + 1]) != null) {
+                    l2.add(terreno[k + 1][l + 1]);
+                }
 
-        }
-
-        if ((k >= 1 && k <= terreno.length)) {
-
-            if ((l >= 0 && l <= terreno.length)) {
-                l2.add(terreno[k - 1][l]);
-            }
-
-        }
-
-        if ((k >= 1 && k <= terreno.length)) {
-
-            if ((l >= 0 && l <= terreno.length)) {
-                l2.add(terreno[k - 1][l + 1]);
-            }
-
-        }
-
-        if ((k >= 0 && k <= terreno.length)) {
-
-            if ((l >= 1 && l <= terreno.length)) {
-                l2.add(terreno[k][l - 1]);
-            }
-
-        }
-
-        if ((k >= 0 && k <= terreno.length - 1)) {
-
-            if ((l >= 0 && l <= terreno.length - 1)) {
-                l2.add(terreno[k][l + 1]);
-            }
-
-        }
-        if ((k >= 0 && k <= terreno.length)) {
-
-            if ((l >= 1 && l <= terreno.length)) {
-                l2.add(terreno[k + 1][l - 1]);
-            }
-
-        }
-        if ((k >= 0 && k <= terreno.length)) {
-
-            if ((l >= 0 && l <= terreno.length)) {
-                l2.add(terreno[k + 1][l]);
-            }
-
-        }
-        if ((k >= 0 && k <= terreno.length)) {
-
-            if ((l >= 0 && l <= terreno.length)) {
-                l2.add(terreno[k + 1][l + 1]);
             }
 
         }
 
         return l2;
+
+    }
+
+    private static void escrituraJSON(String nombre, List<Landscape> datos) {
+
+        ObjectMapper mappeador = new ObjectMapper();
+
+        mappeador.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+        try {
+            mappeador.writeValue(new File(nombre), datos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -206,34 +202,40 @@ public class LecturaFichero {
                 tokens = linea.split("\n");
                 tokens = linea.split(" ");
 
-                //ArrayList<Landscape> terreno = new ArrayList<>();
                 //-----------------------
                 for (int j = 0; j < tokens.length; j++) {
 
                     if (tokens[j].equals("x")) {
 
-                        terreno[i][j] = new Landscape(true, false);
+                        //terreno[i + 1][j + 1] = new Landscape(true, false, i, j);
+                        terreno[i][j] = new Landscape(true, false, i, j);
 
-                        System.out.println(recorrerIslasManual(i, j));
+                        // Dejaremos la comprobación para más tarde
+                        //System.out.println(recorrerIslasManual(i + 1, j + 1));
+                        if (((i == 1) && (j == 1)) || ((i == 4) && (j == 4))) {
+                            terreno[i][j] = new Landscape(true, true, i, j);
+                        }
 
-                        //recorrerAreaIslas(i, j);
-                        //System.out.println(l1);
                     } else if (tokens[j].equals("a")) {
 
-                        terreno[i][j] = new Landscape(false, false);
+                        //terreno[i + 1][j + 1] = new Landscape(false, false, i, j);
+                        terreno[i][j] = new Landscape(false, false, i, j);
                     }
 
                 }
 
                 i++;
-                //contador++;
                 //-----------------------
             }
 
             for (Landscape[] terreno1 : terreno) {
                 System.out.println("");
                 for (Landscape terreno11 : terreno1) {
-                    System.out.print(terreno11 + " ");
+                    if (terreno11 != null) {
+                        System.out.print(terreno11 + "\t");
+                    } else {
+                        System.out.print("[00000]\t\t");
+                    }
                 }
             }
             System.out.println("\n");
@@ -241,6 +243,23 @@ public class LecturaFichero {
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
+
+        System.out.println("Escribiendo el fichero");
+
+        List<Landscape> listaIslas = new ArrayList<>();
+
+        for (int l = 0; l < terreno.length; l++) {
+            for (int k = 0; k < terreno[l].length; k++) {
+
+                if (terreno[l][k].isEstadoIsla()) {
+                    listaIslas.add(terreno[l][k]);
+                }
+
+            }
+
+        }
+
+        escrituraJSON("salida.json", listaIslas);
 
     }
 

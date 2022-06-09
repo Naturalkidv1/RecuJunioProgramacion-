@@ -1,0 +1,11 @@
+[ {
+  "estadoIsla" : true,
+  "estadoTierra" : true,
+  "ejeX" : 1,
+  "ejeY" : 1
+}, {
+  "estadoIsla" : true,
+  "estadoTierra" : true,
+  "ejeX" : 4,
+  "ejeY" : 4
+} ]
